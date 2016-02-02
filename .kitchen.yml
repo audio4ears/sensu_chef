@@ -1,0 +1,24 @@
+---
+driver:
+  name: vagrant
+  customize:
+    natdnshostresolver1: "on"
+  network:
+    - ["forwarded_port", {guest: 80, host: 8080}]
+    - ["forwarded_port", {guest: 443, host: 8443}]
+    - ["forwarded_port", {guest: 3000, host: 3000}]
+    - ["forwarded_port", {guest: 4567, host: 4567}]
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: 12.6.0
+
+platforms:
+  - name: opscode_centos-7.1
+
+suites:
+  - name: default
+    run_list:
+      - recipe[sensu_chef::default]
+    attributes:
+      dev_mode: true
